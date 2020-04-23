@@ -21,6 +21,15 @@ router.post('/users', async (req,res) => {
     }
 })
 
+router.post('/users/login', async (req,res) => {
+    try {
+        const user = await User.findbyCredentials(req.body.email, req.body.password)
+        res.send(user)
+    } catch (e) {
+        res.send('Error login' + e)
+    }
+})
+
 router.get('/users',(req,res) => {
     User.find({}).then((user) => {
         res.send(user)
@@ -46,16 +55,21 @@ router.get('/users/:id',(req,res) => {
 
 
 router.patch('/users/:id', async(req,res) => {
-debugger
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['name','email']
+    const allowedUpdates = ['name','email','password','age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
     if (!isValidOperation){
         return res.status(400).send({error: 'INVALID UPDATES YA 7ABIBI'})
     }
 
     try {
-        const user = await User.findByIdAndUpdate(req.params.id,req.body, {new: true,runValidators: true})
+
+
+        const user = await User.findById(req.params.id)
+
+        updates.forEach((update) => user[update] = req.body[update])
+        await user.save()
+        // const user = await User.findByIdAndUpdate(req.params.id,req.body, {new: true,runValidators: true})
 
         if (!user){
             return res.status(404).send()
