@@ -9,6 +9,19 @@ const bcrypt = require('bcryptjs')
 const app = express()
 const port = process.env.PORT || 3000
 
+//Middleware function 
+// app.use((req,res, next) => {
+//     // console.log(req.method, req.path)
+//     if (req.method === 'GET'){
+//         res.send('GET requests are disabled')
+//     }else{
+//         next()
+//     }
+// })
+
+// app.use((req,res,next) => {
+//     res.status(503).send('Site is currently down. Check back soon!')
+// })
 
 app.use(express.json())
 app.use(userRouter)
@@ -29,11 +42,11 @@ const myFunction = async () => {
     // const isMatch = await bcrypt.compare('Red12345!',hashedPassword)
     // console.log(isMatch)
 
-    const token = jwt.sign({_id: 'abc123'},'thisismynewcourse',{expiresIn: '0 seconds'})
-    console.log(token)
+    // const token = jwt.sign({_id: 'abc123'},'thisismynewcourse',{expiresIn: '0 seconds'})
+    // console.log(token)
 
-    const data = jwt.verify(token,'thisismynewcourse')
-    console.log(data)
+    // const data = jwt.verify(token,'thisismynewcourse')
+    // console.log(data)
 
 }
 
