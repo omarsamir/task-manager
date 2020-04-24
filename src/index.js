@@ -31,8 +31,8 @@ app.listen(port, ()=> {
     console.log('Server is up on port '+port)
 }) 
 
-const jwt = require('jsonwebtoken')
-const myFunction = async () => {
+// const jwt = require('jsonwebtoken')
+// const myFunction = async () => {
     // const password = 'Red12345!'
     // const hashedPassword = await bcrypt.hash(password, 8)
 
@@ -48,6 +48,20 @@ const myFunction = async () => {
     // const data = jwt.verify(token,'thisismynewcourse')
     // console.log(data)
 
+// }
+
+// myFunction()
+
+
+const main = async () => {
+    // const task = await Task.findById('5ea2e36988dab55f288d5807')
+    // await task.populate('owner').execPopulate()
+    // console.log(task.owner)
+
+
+    const user = await User.findById('5ea2e28188dab55f288d5803')
+    await user.populate('tasks').execPopulate()
+    console.log(user.tasks)
 }
 
-myFunction()
+main()
