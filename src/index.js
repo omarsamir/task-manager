@@ -8,7 +8,13 @@ const bcrypt = require('bcryptjs')
 
 const app = express()
 const port = process.env.PORT || 3000
-
+const multer = require('multer')
+const upload = multer({
+    dest: 'images'
+})
+app.post('/upload',upload.single('upload'), (req,res) => {
+    res.send()
+})
 //Middleware function 
 // app.use((req,res, next) => {
 //     // console.log(req.method, req.path)
@@ -53,15 +59,15 @@ app.listen(port, ()=> {
 // myFunction()
 
 
-const main = async () => {
+// const main = async () => {
     // const task = await Task.findById('5ea2e36988dab55f288d5807')
     // await task.populate('owner').execPopulate()
     // console.log(task.owner)
 
 
-    const user = await User.findById('5ea2e28188dab55f288d5803')
-    await user.populate('tasks').execPopulate()
-    console.log(user.tasks)
-}
+    // const user = await User.findById('5ea2e28188dab55f288d5803')
+    // await user.populate('tasks').execPopulate()
+    // console.log(user.tasks)
+// }
 
 // main()
