@@ -25,7 +25,20 @@ router.get('/tasks',auth, async (req,res) => {
         // }
         // const tasks = await Task.findOne({owner: req.user._id})
         // console.log('FIND BY ONE: ',tasks)
-        await req.user.populate('tasks').execPopulate()
+        const match = {}
+        debugger
+        if(req.query.completed){
+            match.completed = req.query.completed
+        }
+        await req.user.populate({
+            path:'tasks',
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.limit) * (parseInt(req.query.page) - 1)
+            }
+        }).execPopulate()
+        
         res.send(req.user.tasks)
         // res.send(tasks)
     } catch (e) {
