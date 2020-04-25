@@ -18,6 +18,17 @@ router.post('/tasks',auth,(req,res) => {
 })
 
 router.get('/tasks',auth, async (req,res) => {
+
+    const match = {}
+    const sort = {}
+    if (req.query.completed) {
+        match.completed = req.query.completed
+    }
+    debugger
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+    }
     try {
         // const tasks = await Task.findOne({owner: req.user._id})
         // if(!tasks){
@@ -25,17 +36,14 @@ router.get('/tasks',auth, async (req,res) => {
         // }
         // const tasks = await Task.findOne({owner: req.user._id})
         // console.log('FIND BY ONE: ',tasks)
-        const match = {}
-        debugger
-        if(req.query.completed){
-            match.completed = req.query.completed
-        }
+        
         await req.user.populate({
             path:'tasks',
             match,
             options: {
                 limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.limit) * (parseInt(req.query.page) - 1)
+                skip: parseInt(req.query.limit) * (parseInt(req.query.page) - 1),
+                sort
             }
         }).execPopulate()
         
